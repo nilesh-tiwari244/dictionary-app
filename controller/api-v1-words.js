@@ -1,0 +1,62 @@
+const words=require('../data.js');
+
+const allWords=(req,res)=>{
+    const {limit}=req.query;
+    let limitedWords=[...words];
+    if (limit){
+        limitedWords=limitedWords.slice(0,Number(limit));
+        return res.status(200).json({success:true,data:limitedWords})
+    }
+    res.status(200).json({success:true,data:words})
+}
+const oneWord=(req,res)=>{
+    const {id}=req.params;
+    let ele=words.find((word)=>word.id===Number(id));
+    if (!ele){
+        return res
+                .status(400)
+                .json({success:false,data:{msg:`no elements with id=${id}`}})
+    }
+    return res.status(200).json({success:true,data:{name:ele.name,id:ele.id}})
+}
+const addWord=(req,res)=>{
+    const {name}=req.body;
+    if (!name){
+        return res
+                .status(400)
+                .json({success:false,msg:"please enter a word"});
+    }
+    for (let i=0;i<name.length;i++){
+        if (name[i]===" "){
+            return res
+                .status(400)
+                .json({success:false,msg:"please enter a word with out spaces"});
+        }
+    }
+    res.status(200).json({success:true,data:[...words,{name:name}]})
+}
+const editWord=(req,res)=>{
+    const {id}=req.params;
+    const {name}=req.body;
+    let reqword=words.find((word)=>word.id===Number(id));
+    if (!reqword){
+        return res
+                .status(400)
+                .json({success:false,msg:`no such word with id= ${id}`});
+    }
+    let prevname=reqword.name;
+    reqword.name=name;
+    return res.status(200).json({success:true,data:{"previous name":prevname,"new name":name}})
+}
+const deleteWord=(req,res)=>{
+    const {id}=req.params;
+    let reqword=words.find((word)=>word.id===Number(id));
+    if (!reqword){
+        return res
+                .status(400)
+                .json({success:false,msg:`no such word with id= ${id}`});
+    }
+    let newlist=words.filter((word)=>word.id!=id)
+    return res.status(200).json({success:true,data:newlist})
+}
+module.exports={allWords,oneWord,addWord,editWord,deleteWord}
