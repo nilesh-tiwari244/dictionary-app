@@ -1,5 +1,5 @@
 const words=require('../data.js');
-
+const Word=require('../models/word');
 const allWords=(req,res)=>{
     const {limit}=req.query;
     let limitedWords=[...words];
@@ -19,7 +19,11 @@ const oneWord=(req,res)=>{
     }
     return res.status(200).json({success:true,data:{name:ele.name,id:ele.id}})
 }
-const addWord=(req,res)=>{
+const addWord= async (req,res)=>{
+    const bod=req.body;
+    const newWord=await Word.create(bod);
+    res.status(201).json(newWord);
+    /*
     const {name}=req.body;
     if (!name){
         return res
@@ -34,6 +38,7 @@ const addWord=(req,res)=>{
         }
     }
     res.status(200).json({success:true,data:[...words,{name:name}]})
+*/
 }
 const editWord=(req,res)=>{
     const {id}=req.params;
