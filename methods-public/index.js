@@ -24,6 +24,7 @@ const extractbtn = document.getElementById("button-extract");
 const removeallbtn = document.getElementById("button-removeall");
 const savetabbtn = document.getElementById("button-savetab");
 const un_li = document.querySelector("#unordered-list");
+const err=document.getElementById("error-space");
 
 render2();
 inputel.focus();
@@ -39,36 +40,36 @@ submitbtn.addEventListener("click", async () => {
     let tex = inputel.value;
     inputel.value = "";
     try {
-        const { data } = await axios.post('/api/v1/words/', { name: tex })
+        const { data } = await axios.post('/api/v1/words/', { name: tex,reminder:false })
         render2();
         inputel.focus();
     }
-    catch(e){
-        console.log(e);
-    }
-})
-const clickword=(wor)=>{
-    return new Promise((res,rej)=>{
-        let zx=document.getElementById(`word_${wor}`);
-        if (zx){
-            res(zx.click());
-        }
-        else{
-            rej(console.log("no such word"));
-        }
-    })
-}
+    catch(error){
+       // err.innerHTML=`<h3>${e.response.data.msg}</h3>`;
+       console.log(e);
+}})
+
 inputel.addEventListener("keypress", async (event) => {
     if (event.key === "Enter") {
         let tempwo = inputel.value;
         inputel.value = "";
         try {
             const { data } = await axios.post('/api/v1/words/', { name: tempwo })
-            render2();
+            /*
+            const zp = ` <li> 
+                    <a id="word_${tempwo}" href="${merr}${tempwo}" target="_blank"> ${tempwo} </a> 
+                    </li>`;
+            un_li.innerHTML += zp;
+            */
+           render2();
+           window.open(`${merr}${tempwo}`)
             inputel.focus();
-            await clickword(tempwo);
+            /*
+            let zx = document.getElementById(`word_${wor}`);
+            zx.click();
+            */
         }
-        catch(e){
+        catch (e) {
             console.log(e);
         }
     }
@@ -118,8 +119,8 @@ savetabbtn.addEventListener("click",function(){
     render2();
 })
 */
-function render2() {
-    getword();
+function render2 (){
+getword();
     /*
     temp = "";
     if (pp != null) {

@@ -25,6 +25,13 @@ const oneWord=(req,res)=>{
 }
 const addWord= async (req,res)=>{
     const bod=req.body;
+    for (let i=0;i<bod.name.length;i++){
+        if (bod.name[i]===" "){
+            return res
+                .status(400)
+                .json({success:false,msg:"please enter a word with out spaces"});
+        }
+    }
     const newWord=await Word.create(bod);
     res.status(201).json(newWord);
     /*
@@ -34,15 +41,8 @@ const addWord= async (req,res)=>{
                 .status(400)
                 .json({success:false,msg:"please enter a word"});
     }
-    for (let i=0;i<name.length;i++){
-        if (name[i]===" "){
-            return res
-                .status(400)
-                .json({success:false,msg:"please enter a word with out spaces"});
-        }
-    }
     res.status(200).json({success:true,data:[...words,{name:name}]})
-*/
+    */
 }
 const editWord=(req,res)=>{
     const {id}=req.params;

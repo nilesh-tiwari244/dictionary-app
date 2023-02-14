@@ -1,3 +1,8 @@
+#error-spaces{
+    text-align: center;
+    margin:auto;
+    color: #9e330c;
+}
 body {
     margin: 0;
     padding: 10px;
@@ -50,6 +55,16 @@ h1{
     margin:auto;
     padding-top: 400 px;
     padding-bottom: 200 px;
+    width:100%;
+    height: 40px;
+    box-sizing: border-box;
+    border: 1 px solid #429e0c;
+    margin-bottom: 4px;
+}
+h3{
+    margin:auto;
+    padding-top: 10 px;
+    padding-bottom: 10 px;
     width:100%;
     height: 40px;
     box-sizing: border-box;
