@@ -1,13 +1,17 @@
 const words=require('../data.js');
 const Word=require('../models/word');
-const allWords=(req,res)=>{
+const allWords=async (req,res)=>{
     const {limit}=req.query;
-    let limitedWords=[...words];
-    if (limit){
-        limitedWords=limitedWords.slice(0,Number(limit));
-        return res.status(200).json({success:true,data:limitedWords})
+    try{
+        let pp=await Word.find({});
+        if (limit){
+            pp=pp.slice(0,Number(limit));
+        }
+        res.status(200).json({success:true,data:pp});
     }
-    res.status(200).json({success:true,data:words})
+    catch(e){
+        res.status(400).json({success:false,msg:e})
+    }
 }
 const oneWord=(req,res)=>{
     const {id}=req.params;
