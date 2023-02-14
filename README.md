@@ -4,4 +4,4 @@
 
 ## learning basics of git along with it
 
-### trying git
+### trying something with git
