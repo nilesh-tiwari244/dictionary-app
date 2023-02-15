@@ -6,9 +6,10 @@ const getword = async () => {
     try {
         let { data } = await axios.get('/api/v1/words');
         const allwor = data.data.map((word) => {
-            return `<li> 
-                    <a id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name} </a> 
-                    </li>`
+            return `<li> <nobr>
+                    <a id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name} </a> <nobr>
+                    <input type="checkbox" id="checkbox_${word.name}" >
+                    </li> `
         })
         un_li.innerHTML = allwor.join('');
     }

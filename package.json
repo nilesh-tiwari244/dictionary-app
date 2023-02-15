@@ -16,5 +16,14 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://nilesh-tiwari244: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@github.com/nilesh-tiwari244/dictionary-app.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/nilesh-tiwari244/dictionary-app/issues"
+  },
+  "homepage": "https://github.com/nilesh-tiwari244/dictionary-app#readme"
 }
