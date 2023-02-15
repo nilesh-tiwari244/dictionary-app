@@ -1,14 +1,42 @@
 let merr = "https://www.merriam-webster.com/dictionary/";
 let words = [];
 let pp = [];
+const boxChecked = async (wor) => {
+    if (wor.reminder === true) {
+        wor.reminder = false;
+    }
+    else {
+        wor.reminder = true;
+    }
+    const { data } = await axios.post('/api/v1/words/', wor)
+    render2();
+    console.log(wor);
+}
 
+const trialf = (gg) => {
+    console.log(gg.name, gg.reminder);
+}
 const getword = async () => {
     try {
         let { data } = await axios.get('/api/v1/words');
         const allwor = data.data.map((word) => {
+            let pp = "";
+            let col = "green";
+            if (word.reminder === true) {
+                pp = "checked";
+                col = "red";
+            }
+            //  <button style="color:red;width:15px;height:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="trialf('herooo')">X</button><nobr>
             return `<li> <nobr>
-                    <a id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name} </a> <nobr>
-                    <input type="checkbox" id="checkbox_${word.name}" >
+                        <div style="display:flex; justify-content:space-between; margin-right:00px;">
+                            <div >
+                                <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name} </a> 
+                            </div><nobr>
+                            <div style="display:flex; justify-content:space-between; width:100px">
+                               
+                                <input style="width:20px;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({name:'${word.name}',reminder:${word.reminder}})">
+                            </div>
+                        </div>
                     </li> `
         })
         un_li.innerHTML = allwor.join('');
@@ -17,6 +45,7 @@ const getword = async () => {
         un_li.innerHTML = `<div class="alert alert-danger">can't fetch data</div>`
     }
 }
+
 let temp = "";
 const inputel = document.getElementById("input-el");
 const submitbtn = document.getElementById("button-submit");
@@ -25,7 +54,7 @@ const extractbtn = document.getElementById("button-extract");
 const removeallbtn = document.getElementById("button-removeall");
 const savetabbtn = document.getElementById("button-savetab");
 const un_li = document.querySelector("#unordered-list");
-const err=document.getElementById("error-space");
+const err = document.getElementById("error-space");
 
 render2();
 inputel.focus();
@@ -41,14 +70,15 @@ submitbtn.addEventListener("click", async () => {
     let tex = inputel.value;
     inputel.value = "";
     try {
-        const { data } = await axios.post('/api/v1/words/', { name: tex,reminder:false })
+        const { data } = await axios.post('/api/v1/words/', { name: tex, reminder: false })
         render2();
         inputel.focus();
     }
-    catch(error){
-       // err.innerHTML=`<h3>${e.response.data.msg}</h3>`;
-       console.log(e);
-}})
+    catch (error) {
+        // err.innerHTML=`<h3>${e.response.data.msg}</h3>`;
+        console.log(e);
+    }
+})
 
 inputel.addEventListener("keypress", async (event) => {
     if (event.key === "Enter") {
@@ -62,8 +92,8 @@ inputel.addEventListener("keypress", async (event) => {
                     </li>`;
             un_li.innerHTML += zp;
             */
-           render2();
-           window.open(`${merr}${tempwo}`)
+            render2();
+            window.open(`${merr}${tempwo}`)
             inputel.focus();
             /*
             let zx = document.getElementById(`word_${wor}`);
@@ -120,8 +150,8 @@ savetabbtn.addEventListener("click",function(){
     render2();
 })
 */
-function render2 (){
-getword();
+function render2() {
+    getword();
     /*
     temp = "";
     if (pp != null) {
