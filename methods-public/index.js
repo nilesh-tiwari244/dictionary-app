@@ -1,39 +1,58 @@
 let merr = "https://www.merriam-webster.com/dictionary/";
 let words = [];
 let pp = [];
-const boxChecked = async (wor) => {
+
+let temp = "";
+const inputel = document.getElementById("input-el");
+const submitbtn = document.getElementById("button-submit");
+const removebtn = document.getElementById("button-remove");
+const completebtn = document.getElementById("button-completed");
+const removeallbtn = document.getElementById("button-removeall");
+const savetabbtn = document.getElementById("button-savetab");
+const un_li = document.querySelector("#unordered-list");
+const result = document.querySelector('.result')
+const err = document.getElementById("error-space");
+
+const logError=(error)=>{ // logs error below the input box
+    err.innerHTML=`<h2 style="color:red;text-align:center;font-size:20px;font-weight:bold;">${error}</h2>`;
+    setTimeout(()=>{err.innerHTML=''},5000);
+}
+
+const crossClicked = async ({name}) => {// completed
+    console.log(name);
+    let pp=await axios.delete(`/api/v1/words/name/${name}`);
+    render();
+    inputel.focus();
+}
+
+const boxChecked = async (wor) => {// completed
     if (wor.reminder === true) {
         wor.reminder = false;
     }
     else {
         wor.reminder = true;
     }
-    const { data } = await axios.post('/api/v1/words/', wor)
-    render2();
-    console.log(wor);
+    const { data } = await axios.put(`/api/v1/words/name/${wor.name}`,wor)
+    render();
 }
 
-const trialf = (gg) => {
-    console.log(gg.name, gg.reminder);
-}
-const getword = async () => {
+const getword = async () => { // use axios.get to get all words
     try {
         let { data } = await axios.get('/api/v1/words');
         const allwor = data.data.map((word) => {
-            let pp = "";
+            let pp = "checked";
             let col = "green";
             if (word.reminder === true) {
-                pp = "checked";
+                pp = "";
                 col = "red";
             }
-            //  <button style="color:red;width:15px;height:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="trialf('herooo')">X</button><nobr>
-            return `<li> <nobr>
+            return `<li>
                         <div style="display:flex; justify-content:space-between; margin-right:00px;">
-                            <div >
-                                <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name} </a> 
-                            </div><nobr>
-                            <div style="display:flex; justify-content:space-between; width:100px">
-                               
+                            <div style="display:flex; justify-content:space-between;">
+                                <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()} </a> 
+                            </div>
+                            <div style="display:flex; justify-content:space-between; width:120px">
+                                <button style="margin-right:0px; color:#ffa500;width:15px;height:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="crossClicked({name:'${word.name}'})">X</button>
                                 <input style="width:20px;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({name:'${word.name}',reminder:${word.reminder}})">
                             </div>
                         </div>
@@ -43,56 +62,41 @@ const getword = async () => {
     }
     catch (error) {
         un_li.innerHTML = `<div class="alert alert-danger">can't fetch data</div>`
+        console.log(error);
     }
 }
 
-let temp = "";
-const inputel = document.getElementById("input-el");
-const submitbtn = document.getElementById("button-submit");
-const removebtn = document.getElementById("button-remove");
-const extractbtn = document.getElementById("button-extract");
-const removeallbtn = document.getElementById("button-removeall");
-const savetabbtn = document.getElementById("button-savetab");
-const un_li = document.querySelector("#unordered-list");
-const err = document.getElementById("error-space");
-
-render2();
-inputel.focus();
-
-/*
-extractbtn.addEventListener("click",function(){
-   // inputel.value=JSON.stringify(pp);
-    inputel.value=pp;
-})
-*/
-
-submitbtn.addEventListener("click", async () => {
+submitbtn.addEventListener("click", async () => { // done
     let tex = inputel.value;
     inputel.value = "";
     try {
-        const { data } = await axios.post('/api/v1/words/', { name: tex, reminder: false })
-        render2();
+        const { data } = await axios.post('/api/v1/words', { name: tex, reminder: false })
+        render();
         inputel.focus();
     }
     catch (error) {
-        // err.innerHTML=`<h3>${e.response.data.msg}</h3>`;
-        console.log(e);
+        if (error.response.status==400){
+            logError(error.response.data.msg);
+        }
+        else if (error.response.status==500){
+            logError(error.response.data.msg.errors.name.message);
+        }
     }
 })
 
-inputel.addEventListener("keypress", async (event) => {
+inputel.addEventListener("keypress", async (event) => { // done
     if (event.key === "Enter") {
         let tempwo = inputel.value;
         inputel.value = "";
         try {
-            const { data } = await axios.post('/api/v1/words/', { name: tempwo })
+            const { data } = await axios.post('/api/v1/words', { name: tempwo })
             /*
             const zp = ` <li> 
                     <a id="word_${tempwo}" href="${merr}${tempwo}" target="_blank"> ${tempwo} </a> 
                     </li>`;
             un_li.innerHTML += zp;
             */
-            render2();
+            render();
             window.open(`${merr}${tempwo}`)
             inputel.focus();
             /*
@@ -100,73 +104,62 @@ inputel.addEventListener("keypress", async (event) => {
             zx.click();
             */
         }
-        catch (e) {
-            console.log(e);
-        }
-    }
-})
-
-removebtn.addEventListener("click", function () {
-    let tex = inputel.value;
-    if (pp != null) {
-        for (let i = 0; i < pp.length; i++) {
-            if (pp[i] == tex) {
-                for (let j = i; j < pp.length - 1; j++) {
-                    pp[j] = pp[j + 1];
-                }
-                pp.pop();
-                i = pp.length;
+        catch (error) {
+            if (error.response.status==400){
+                logError(error.response.data.msg);
+            }
+            else if (error.response.status==500){
+                logError(error.response.data.msg.errors.name.message);
             }
         }
     }
-    inputel.value = "";
-    localStorage.setItem("str_words", JSON.stringify(pp));
-    render2();
-
 })
 
-removeallbtn.addEventListener("dblclick", function () {
-    localStorage.clear();
-    pp = [];
-    render2();
-})
-/*
-savetabbtn.addEventListener("click",function(){
-        let tex=null;
-    chrome.tabs.query({active: true,currentWindow: true},function(tabs){
-        tex = tabs[0].url;
-        if (pp != null) {
-            pp.push(tex);
+removebtn.addEventListener("click", async function () {// this is complete
+    let tex = inputel.value;
+    if (tex!=''){
+        try{
+            let pp=await axios.delete(`/api/v1/words/name/${tex}`);
+            console.log(pp.data.msg);
         }
-        else{
-            words.push(tex);
-            pp=words;
-            words=[];
+        catch(e){
+            logError(e.response.data.msg);
+            console.log(e.response.data.msg);
         }
-    });
-
-    inputel.value = "";
-    localStorage.setItem("str_words",JSON.stringify(pp));
-    render2();
-})
-*/
-function render2() {
-    getword();
-    /*
-    temp = "";
-    if (pp != null) {
-        for (let i = pp.length - 1; i >= 0; i--) {
-            // temp+="<li> <a href='"+ words[i]+"' target='_blank'> " + words[i] + "</a> </li>";
-            temp += `<li>
-                     <a id="word_${pp[i]}" href="${merr}${pp[i]}" target="_blank">
-                         ${pp[i]}
-                     </a>
-                 </li>
-         `;
-        }
-        un_li.innerHTML = temp;
     }
-    */
+    else{
+        logError("No word enterd");
+    }
+    inputel.value = "";
+    render();
+})
+
+completebtn.addEventListener("click", function () {// routes to an html page with list of completed words
+    window.open('/completedWords/completed.html',"_self")
+    inputel.value = pp;
+})
+
+removeallbtn.addEventListener("dblclick",async function () {// done
+    console.log("registered");
+    try {
+        let { data } = await axios.get('/api/v1/words');
+        data=data.data;
+        if (data.length>0){
+            let i=0;
+            for (i=0;i<data.length;i++){
+                let pp=await axios.delete(`/api/v1/words/name/${data[i].name}`);
+            }
+        }
+    }
+    catch (error) {
+        un_li.innerHTML = `<div class="alert alert-danger">can't fetch data</div>`
+        console.log(error);
+    }
+    render();
+})
+
+function render() {
+    getword();
 }
 /*
 const li=document.creatElement("li");
@@ -174,28 +167,5 @@ li.textContent=words[i];
 un_li.append(li);
 */
 
-
-
-extractbtn.addEventListener("click", function () {
-    inputel.value = pp;
-})
-
-const result = document.querySelector('.result')
-const postRequest = document.querySelector("#button-server")
-
-postRequest.addEventListener("click", async (e) => {
-    console.log("button clicked");
-    e.preventDefault();
-    let val = inputel.value;
-    try {
-        const { data } = await axios.post('/api/v1/newword', { name: val }); // when we perform an http request with axios we receive a giant object and here we only required our data one
-        console.log(data.data[0]);
-        result.innerHTML += ` <li> 
-        <a href="${merr}${val}" target="_blank"> ${val} </a> 
-        </li>`;
-    }
-    catch (er) {
-        errblock.textContent = er.response.data.msg;
-    }
-    inputel.value = '';
-})
+render(); // needs to be after the definition of render
+inputel.focus();

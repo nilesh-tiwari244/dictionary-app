@@ -36,10 +36,10 @@ input{
 }
 #heading{
     text-emphasis: bold;
-    margin-top: 60px;
+    margin-top: 180px;
     margin-bottom: 40px;
     text-align: center;
-    font-size: 40px;
+    font-size: 80px;
     color:rgb(245, 243, 243);
 }
 #Entries{
@@ -53,7 +53,7 @@ input{
 }
 h1{
     margin:auto;
-    padding-top: 400 px;
+    padding-top: 600 px;
     padding-bottom: 200 px;
     width:100%;
     height: 40px;
@@ -72,10 +72,11 @@ h3{
     margin-bottom: 4px;
 }
 #buttons{
+    padding-top:50px;
     text-align: center;
+    margin-top:50px;
     margin:auto;
     align-items: center;
-    
 }
 button {
     padding: 5px 5px;
@@ -91,8 +92,8 @@ ul {
     padding-left: 0px;
     padding-bottom: 0px;
     overflow: scroll;
-    width: 400px;
-    max-height:300px;
+    width: 600px;
+    max-height:700px;
     margin:auto;
     font-size: 30px;
     color: #04496b;
@@ -105,4 +106,9 @@ li{
 }
 a{
     color: #0c9e46;
+}
+#button-goback{
+    text-align: center;
+    margin:auto;
+    align-items: center;
 }

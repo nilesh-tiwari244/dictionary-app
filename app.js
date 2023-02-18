@@ -10,7 +10,7 @@ require('dotenv').config();
 app.use('/api/v1/words',routes);
 
 app.get('/',(req,res)=>{
-    app.send(path.__dirname+'./index.html');
+    app.send('./methods-public/index.html');
 })
 
 const port=5000;
