@@ -1,6 +1,6 @@
 const words=require('../data.js');
 const Word=require('../models/word');
-const allWords=async (req,res)=>{
+const allWords=async (req,res)=>{ //done
     const {limit}=req.query;
     try{
         let pp=await Word.find({});
@@ -10,21 +10,26 @@ const allWords=async (req,res)=>{
         res.status(200).json({success:true,data:pp});
     }
     catch(e){
-        res.status(400).json({success:false,msg:e})
+        res.status(500).json({success:false,msg:e})
     }
 }
-const oneWord=(req,res)=>{
-    const {id}=req.params;
-    let ele=words.find((word)=>word.id===Number(id));
-    if (!ele){
+const oneWord=async (req,res)=>{
+    const {id:wordID}=req.params;
+    try{
+        let pg=await Word.findOne({_id:wordID});
+        if (!pg){
+            return res.status(404).json({success:false,msg:`no such word with id=${wordID}`})
+        }
+        res.status(200).json({success:true,data:pg});
+    }
+    catch(e){
         return res
-                .status(400)
-                .json({success:false,data:{msg:`no elements with id=${id}`}})
-    }
-    return res.status(200).json({success:true,data:{name:ele.name,id:ele.id}})
+                .status(500)
+                .json({success:false,msg:e});
+    }  
 }
-const addWord= async (req,res)=>{
-    const bod=req.body;
+const addWord= async (req,res)=>{ // done
+    const bod=req.body; // now here bod is an object
     for (let i=0;i<bod.name.length;i++){
         if (bod.name[i]===" "){
             return res
@@ -34,38 +39,43 @@ const addWord= async (req,res)=>{
     }
     const newWord=await Word.create(bod);
     res.status(201).json(newWord);
-    /*
-    const {name}=req.body;
-    if (!name){
-        return res
-                .status(400)
-                .json({success:false,msg:"please enter a word"});
-    }
-    res.status(200).json({success:true,data:[...words,{name:name}]})
-    */
 }
-const editWord=(req,res)=>{
-    const {id}=req.params;
-    const {name}=req.body;
-    let reqword=words.find((word)=>word.id===Number(id));
-    if (!reqword){
-        return res
-                .status(400)
-                .json({success:false,msg:`no such word with id= ${id}`});
+const editWord=async (req,res)=>{
+    const {id:wordID}=req.params;
+    const bod=req.body;
+    try{
+        let reqword=await Word.findOneAndUpdate({_id:wordID},bod,{
+            new:true,
+            runValidators:true,
+        }); // here the third parameter is options
+        // now her reqword will show the deleted word even if success
+        // to see the updated word we need to add options
+        // neither we will be able to add the validations on the new word
+          // the above two things will happen because we dont have the options object
+        if (!reqword){
+            return res
+                    .status(404)
+                    .json({success:false,msg:`no such word with id= ${wordID}`});
+        }
+        res.status(200).json({success:true,data:reqword})
     }
-    let prevname=reqword.name;
-    reqword.name=name;
-    return res.status(200).json({success:true,data:{"previous name":prevname,"new name":name}})
+    catch(e){
+        res.status(500).json({success:false,msg:e})
+    }
 }
-const deleteWord=(req,res)=>{
-    const {id}=req.params;
-    let reqword=words.find((word)=>word.id===Number(id));
-    if (!reqword){
-        return res
-                .status(400)
-                .json({success:false,msg:`no such word with id= ${id}`});
+const deleteWord=async (req,res)=>{
+    const {id:wordID}=req.params;
+    try{
+        let pg=await Word.findOneAndDelete({_id:wordID});
+        if (!pg){
+            return res.status(404).json({success:false,msg:`no such word with id=${wordID}`})
+        }
+        res.status(200).json({success:true,data:pg});
     }
-    let newlist=words.filter((word)=>word.id!=id)
-    return res.status(200).json({success:true,data:newlist})
+    catch(e){
+        return res
+                .status(500)
+                .json({success:false,msg:e});
+    }  
 }
 module.exports={allWords,oneWord,addWord,editWord,deleteWord}
