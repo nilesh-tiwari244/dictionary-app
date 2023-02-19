@@ -5,6 +5,7 @@ let pp = [];
 let temp = "";
 const goBack=document.getElementById("button-goback");
 const un_li = document.querySelector("#unordered-list");
+const count = document.getElementById("count");
 
 const crossClicked = async ({name}) => {// completed
     console.log(name);
@@ -28,14 +29,17 @@ const getword = async () => { // use sxios.get to get all words
     try {
         let { data } = await axios.get('/api/v1/words');
         console.log(data.data.length);
+        let ll=0;
         const allwor = data.data.map((word) => {
             let pp = "checked";
             let col = "green";
+            
             if (word.reminder === true) {
                 pp = "";
                 col = "red";
             }
             if (word.reminder===false){
+                ll=ll+1;
                 return `<li>
                         <div style="display:flex; justify-content:space-between; margin-right:00px;">
                             <div style="display:flex; justify-content:space-between;">
@@ -49,6 +53,7 @@ const getword = async () => { // use sxios.get to get all words
                     </li> `
             }
         })
+        count.innerHTML=`${ll}`;
         un_li.innerHTML = allwor.join('');
     }
     catch (error) {

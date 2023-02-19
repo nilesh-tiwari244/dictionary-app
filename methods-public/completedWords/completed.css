@@ -43,13 +43,16 @@ input{
     color:rgb(245, 243, 243);
 }
 #Entries{
+    display:flex;
+    margin:auto;
     text-emphasis: bold;
     margin-top: 30px;
     margin-bottom: 20px;
     text-align: center;
-    font-size: 25px;
+    font-size: 35px;
     color:rgb(240, 199, 199);
     text-decoration-line: underline;
+    justify-content: center;
 }
 h1{
     margin:auto;
@@ -105,6 +108,7 @@ li{
     justify-content:flex-end;
 }
 a{
+    text-decoration-line: none;
     color: #0c9e46;
 }
 #button-goback{

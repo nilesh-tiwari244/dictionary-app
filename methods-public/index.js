@@ -1,4 +1,5 @@
 let merr = "https://www.merriam-webster.com/dictionary/";
+let dictApi = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 let words = [];
 let pp = [];
 
@@ -12,15 +13,18 @@ const savetabbtn = document.getElementById("button-savetab");
 const un_li = document.querySelector("#unordered-list");
 const result = document.querySelector('.result')
 const err = document.getElementById("error-space");
+const count = document.getElementById("count");
+const trialBtn = document.getElementById("button-trial");
 
-const logError=(error)=>{ // logs error below the input box
-    err.innerHTML=`<h2 style="color:red;text-align:center;font-size:20px;font-weight:bold;">${error}</h2>`;
-    setTimeout(()=>{err.innerHTML=''},5000);
+
+const logError = (error) => { // logs error below the input box
+    err.innerHTML = `<h2 style="color:red;text-align:center;font-size:20px;font-weight:bold;">${error}</h2>`;
+    setTimeout(() => { err.innerHTML = '' }, 5000);
 }
 
-const crossClicked = async ({name}) => {// completed
+const crossClicked = async ({ name }) => {// completed
     console.log(name);
-    let pp=await axios.delete(`/api/v1/words/name/${name}`);
+    let pp = await axios.delete(`/api/v1/words/name/${name}`);
     render();
     inputel.focus();
 }
@@ -32,13 +36,14 @@ const boxChecked = async (wor) => {// completed
     else {
         wor.reminder = true;
     }
-    const { data } = await axios.put(`/api/v1/words/name/${wor.name}`,wor)
+    const { data } = await axios.put(`/api/v1/words/name/${wor.name}`, wor)
     render();
 }
 
 const getword = async () => { // use axios.get to get all words
     try {
         let { data } = await axios.get('/api/v1/words');
+        count.innerHTML = ` ${data.data.length} `;
         const allwor = data.data.map((word) => {
             let pp = "checked";
             let col = "green";
@@ -46,10 +51,12 @@ const getword = async () => { // use axios.get to get all words
                 pp = "";
                 col = "red";
             }
+            //  <a style="color:${col};" id="word_${word.name}" href="./completedWords/completed.html" target="_blank"> ${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()} </a>
+            //  <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()} </a> 
             return `<li>
                         <div style="display:flex; justify-content:space-between; margin-right:00px;">
                             <div style="display:flex; justify-content:space-between;">
-                                <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()} </a> 
+                            <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name.charAt().toUpperCase() + word.name.slice(1).toLowerCase()} </a> 
                             </div>
                             <div style="display:flex; justify-content:space-between; width:120px">
                                 <button style="margin-right:0px; color:#ffa500;width:15px;height:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="crossClicked({name:'${word.name}'})">X</button>
@@ -75,10 +82,10 @@ submitbtn.addEventListener("click", async () => { // done
         inputel.focus();
     }
     catch (error) {
-        if (error.response.status==400){
+        if (error.response.status == 400) {
             logError(error.response.data.msg);
         }
-        else if (error.response.status==500){
+        else if (error.response.status == 500) {
             logError(error.response.data.msg.errors.name.message);
         }
     }
@@ -105,10 +112,10 @@ inputel.addEventListener("keypress", async (event) => { // done
             */
         }
         catch (error) {
-            if (error.response.status==400){
+            if (error.response.status == 400) {
                 logError(error.response.data.msg);
             }
-            else if (error.response.status==500){
+            else if (error.response.status == 500) {
                 logError(error.response.data.msg.errors.name.message);
             }
         }
@@ -117,17 +124,17 @@ inputel.addEventListener("keypress", async (event) => { // done
 
 removebtn.addEventListener("click", async function () {// this is complete
     let tex = inputel.value;
-    if (tex!=''){
-        try{
-            let pp=await axios.delete(`/api/v1/words/name/${tex}`);
+    if (tex != '') {
+        try {
+            let pp = await axios.delete(`/api/v1/words/name/${tex}`);
             console.log(pp.data.msg);
         }
-        catch(e){
+        catch (e) {
             logError(e.response.data.msg);
             console.log(e.response.data.msg);
         }
     }
-    else{
+    else {
         logError("No word enterd");
     }
     inputel.value = "";
@@ -135,19 +142,19 @@ removebtn.addEventListener("click", async function () {// this is complete
 })
 
 completebtn.addEventListener("click", function () {// routes to an html page with list of completed words
-    window.open('/completedWords/completed.html',"_self")
+    window.open('/completedWords/completed.html', "_self")
     inputel.value = pp;
 })
 
-removeallbtn.addEventListener("dblclick",async function () {// done
+removeallbtn.addEventListener("dblclick", async function () {// done
     console.log("registered");
     try {
         let { data } = await axios.get('/api/v1/words');
-        data=data.data;
-        if (data.length>0){
-            let i=0;
-            for (i=0;i<data.length;i++){
-                let pp=await axios.delete(`/api/v1/words/name/${data[i].name}`);
+        data = data.data;
+        if (data.length > 0) {
+            let i = 0;
+            for (i = 0; i < data.length; i++) {
+                let pp = await axios.delete(`/api/v1/words/name/${data[i].name}`);
             }
         }
     }
@@ -155,6 +162,17 @@ removeallbtn.addEventListener("dblclick",async function () {// done
         un_li.innerHTML = `<div class="alert alert-danger">can't fetch data</div>`
         console.log(error);
     }
+    render();
+})
+
+trialBtn.addEventListener("click", async function () {// done
+    console.log("registered");
+   // let  wor=inputel.value;
+   wor="boy";
+    inputel.value="";
+    var newWindow = window.open('/wordMeaning/meaning.html');
+    newWindow.param1 =wor;
+
     render();
 })
 
