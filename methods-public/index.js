@@ -22,9 +22,9 @@ const logError = (error) => { // logs error below the input box
     setTimeout(() => { err.innerHTML = '' }, 5000);
 }
 
-const crossClicked = async ({ name }) => {// completed
-    console.log(name);
-    let pp = await axios.delete(`/api/v1/words/name/${name}`);
+const crossClicked = async (id) => {// completed
+    console.log(id.id);
+    let pp = await axios.delete(`/api/v1/words/id/${id.id}`);
     render();
     inputel.focus();
 }
@@ -36,9 +36,18 @@ const boxChecked = async (wor) => {// completed
     else {
         wor.reminder = true;
     }
-    const { data } = await axios.put(`/api/v1/words/name/${wor.name}`, wor)
+    const { data } = await axios.patch(`/api/v1/words/name/${wor.name}`, wor)
     render();
 }
+
+const wordClicked = async (wor) => {
+    console.log("registered");
+    //wor="boy";
+    var newWindow = window.open('/wordMeaning/meaning.html');
+    newWindow.param1 = wor.name;
+    render();
+}
+
 
 const getword = async () => { // use axios.get to get all words
     try {
@@ -52,14 +61,15 @@ const getword = async () => { // use axios.get to get all words
                 col = "red";
             }
             //  <a style="color:${col};" id="word_${word.name}" href="./completedWords/completed.html" target="_blank"> ${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()} </a>
+            //  <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name.charAt().toUpperCase() + word.name.slice(1).toLowerCase()} </a> 
             //  <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()} </a> 
             return `<li>
                         <div style="display:flex; justify-content:space-between; margin-right:00px;">
-                            <div style="display:flex; justify-content:space-between;">
-                            <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name.charAt().toUpperCase() + word.name.slice(1).toLowerCase()} </a> 
+                            <div style="display:flex; justify-content:flex-start;align-items:flex-start;">
+                                <button style="padding: 0px;background-color: rgb(33, 40, 33);margin-leftt:0px; width:80px;margin:0px;align-self:flex-start;font-size:25px" onclick="wordClicked({name:'${word.name}'})"><text style="margin-left:0px;padding:0px;color:${col};align-self:flex-start;justify-content:flex-start;align-items:flex-start;">${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()}</text></button>
                             </div>
                             <div style="display:flex; justify-content:space-between; width:120px">
-                                <button style="margin-right:0px; color:#ffa500;width:15px;height:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="crossClicked({name:'${word.name}'})">X</button>
+                                <button style="margin-right:0px; color:#ffa500;width:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="crossClicked({id:'${word._id}'})">X</button>
                                 <input style="width:20px;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({name:'${word.name}',reminder:${word.reminder}})">
                             </div>
                         </div>
@@ -167,12 +177,11 @@ removeallbtn.addEventListener("dblclick", async function () {// done
 
 trialBtn.addEventListener("click", async function () {// done
     console.log("registered");
-   // let  wor=inputel.value;
-   wor="boy";
-    inputel.value="";
+    let wor = inputel.value;
+    //wor="boy";
+    inputel.value = "";
     var newWindow = window.open('/wordMeaning/meaning.html');
-    newWindow.param1 =wor;
-
+    newWindow.param1 = wor;
     render();
 })
 

@@ -47,7 +47,6 @@ const getword = async (wor) => { // use sxios.get to get all words
         console.log(error);
     }
     name.innerHTML=`${wor}`;
-    
 }
 
 goBack.addEventListener('click',()=>{
