@@ -1,4 +1,3 @@
-const words=require('../data.js');
 const Word=require('../models/word');
 const allWords=async (req,res)=>{ //done
     const {limit}=req.query;
