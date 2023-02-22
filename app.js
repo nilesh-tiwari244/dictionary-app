@@ -3,6 +3,7 @@ const app=express();
 const path=require('path');
 const routes=require('./routes/api-v1-words');
 const notFound=require('./middleware/notFound.js')
+const errorHandler=require('./middleware/errorHandler');
 const connectDB=require('./db/connect')
 // require('./db/connect'); // db will be created after we added connections and the documnets
 
@@ -15,7 +16,7 @@ app.get('/',(req,res)=>{
     app.send('./methods-public/index.html');
 })
 app.use(notFound);
-
+app.use(errorHandler);
 const port=5000;
 
 const start=async ()=>{
