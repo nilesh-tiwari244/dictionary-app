@@ -1,6 +1,6 @@
 const Word=require('../models/word');
 const asyncWrapper=require('../middleware/asyncWrapper');
-const {customAPIError,createCustomError}=require('../errors/customError');
+const {createCustomError}=require('../errors/customError');// here only the error function
 const allWords=asyncWrapper(async (req,res)=>{ //done
     const {limit}=req.query;
     //try{
@@ -17,14 +17,12 @@ const allWords=asyncWrapper(async (req,res)=>{ //done
     */
 })
 
-const addWord= asyncWrapper(async (req,res)=>{ // done
+const addWord= asyncWrapper(async (req,res,next)=>{ // done
     const bod=req.body; // now here bod is an object
     bod.name=bod.name.toLowerCase();
     for (let i=0;i<bod.name.length;i++){
         if (bod.name[i]===" "){
-            return res
-                .status(400)
-                .json({success:false,msg:"please enter a word with out spaces"});
+            return next(createCustomError(`Please enter word without spaces`,500))
         }
     }
     //try{
@@ -40,7 +38,7 @@ const addWord= asyncWrapper(async (req,res)=>{ // done
    */
 })
 
-const oneWordID=asyncWrapper( async (req,res)=>{
+const oneWordID=asyncWrapper( async (req,res,next)=>{
     const {id:wordID}=req.params;
     //try{
         let pg=await Word.findOne({_id:wordID});
@@ -59,14 +57,12 @@ const oneWordID=asyncWrapper( async (req,res)=>{
     */
 })
 
-const editWordID=asyncWrapper( async (req,res)=>{
+const editWordID=asyncWrapper( async (req,res,next)=>{
     const {id:wordID}=req.params;
     const bod=req.body;
     for (let i=0;i<req.body.name.length;i++){
         if (req.body.name[i]===" "){
-            return res
-                .status(400)
-                .json({success:false,msg:"please enter a word with out spaces"});
+            return next(createCustomError(`Please enter word without spaces`,500))
         }
     }
    // try{
@@ -79,9 +75,7 @@ const editWordID=asyncWrapper( async (req,res)=>{
         // neither we will be able to add the validations on the new word
           // the above two things will happen because we dont have the options object
         if (!reqword){
-            return res
-                    .status(404)
-                    .json({success:false,msg:`no such word with id= ${wordID}`});
+            return next(createCustomError(`No such word with id=${wordID}`,404))
         }
         res.status(200).json({success:true,data:reqword})
    // }
@@ -92,12 +86,12 @@ const editWordID=asyncWrapper( async (req,res)=>{
     */
 })
 
-const deleteWordID=asyncWrapper( async (req,res)=>{
+const deleteWordID=asyncWrapper( async (req,res,next)=>{
     const {id:wordID}=req.params;
    // try{
         let pg=await Word.findOneAndDelete({_id:wordID});
         if (!pg){
-            return res.status(404).json({success:false,msg:`${wordID} is not in your dictionary`})
+            return next(createCustomError(`No such word with id=${wordID}`,404))
         }
         res.status(200).json({success:true,data:pg});
     //}
@@ -108,12 +102,12 @@ const deleteWordID=asyncWrapper( async (req,res)=>{
     // }  
 })
 
-const oneWordName=asyncWrapper( async (req,res)=>{
+const oneWordName=asyncWrapper( async (req,res,next)=>{
     const {name:wordName}=req.params;
     //try{
         let pg=await Word.findOne({name:wordName});
         if (!pg){
-            return res.status(404).json({success:false,msg:`no such word with name=${wordName}`})
+            return next(createCustomError(`No such word with name=${wordName}`,404))
         }
         res.status(200).json({success:true,data:pg});
     //}
@@ -124,15 +118,13 @@ const oneWordName=asyncWrapper( async (req,res)=>{
     // }  
 })
 
-const editWordName=asyncWrapper( async (req,res)=>{
+const editWordName=asyncWrapper( async (req,res,next)=>{
     let {name:wordName}=req.params;
     wordName=wordName.toLowerCase();
     const bod=req.body;
     for (let i=0;i<req.body.name.length;i++){
         if (req.body.name[i]===" "){
-            return res
-                .status(400)
-                .json({success:false,msg:"please enter a word with out spaces"});
+            return next(createCustomError(`Please enter word without spaces`,500))
         }
     }
     //try{
@@ -145,9 +137,7 @@ const editWordName=asyncWrapper( async (req,res)=>{
         // neither we will be able to add the validations on the new word
           // the above two things will happen because we dont have the options object
         if (!reqword){
-            return res
-                    .status(404)
-                    .json({success:false,msg:`no such word with name= ${wordName}`});
+            return next(createCustomError(`No such word with name=${wordName}`,404))
         }
         res.status(200).json({success:true,data:reqword})
     //}
@@ -156,13 +146,13 @@ const editWordName=asyncWrapper( async (req,res)=>{
     // }
 })
 
-const deleteWordName=asyncWrapper(async (req,res)=>{
+const deleteWordName=asyncWrapper(async (req,res,next)=>{
     let {name:wordName}=req.params;
     wordName=wordName.toLowerCase();
     //try{
         let pg=await Word.findOneAndDelete({name:wordName});
         if (!pg){
-            return res.status(404).json({success:false,msg:`${wordName} is not in your dictionary`})
+            return next(createCustomError(`No such word with name=${wordName}`,404))
         }
         res.status(200).json({success:true,data:pg});
     //}
