@@ -14,7 +14,8 @@ const un_li = document.querySelector("#unordered-list");
 const result = document.querySelector('.result')
 const err = document.getElementById("error-space");
 const count = document.getElementById("count");
-const trialBtn = document.getElementById("button-trial");
+const importBtn = document.getElementById("button-import");
+const exportBtn = document.getElementById("button-export");
 
 
 const logError = (error) => { // logs error below the input box
@@ -129,11 +130,9 @@ removebtn.addEventListener("click", async function () {// this is complete
     if (tex != '') {
         try {
             let pp = await axios.delete(`/api/v1/words/name/${tex}`);
-            console.log(pp.data.msg);
         }
         catch (e) {
-            logError(e.response.data.msg);
-            console.log(e.response.data.msg);
+            logError(e.response.data);
         }
     }
     else {
@@ -149,6 +148,8 @@ completebtn.addEventListener("click", function () {// routes to an html page wit
 })
 
 removeallbtn.addEventListener("dblclick", async function () {// done
+    logError("Currently Left Docile");
+    /*
     console.log("registered");
     try {
         let { data } = await axios.get('/api/v1/words');
@@ -165,16 +166,39 @@ removeallbtn.addEventListener("dblclick", async function () {// done
         console.log(error);
     }
     render();
+    */
 })
 
-trialBtn.addEventListener("click", async function () {// done
-    console.log("registered");
-    let wor = inputel.value;
-    //wor="boy";
-    inputel.value = "";
-    var newWindow = window.open('/wordMeaning/meaning.html');
-    newWindow.param1 = wor;
-    render();
+importBtn.addEventListener("click", async function () {// done
+    logError("Currently Left Docile");
+    /*
+const {data}=await axios.get('/import')
+const importedWords=data.data;
+if (importedWords.length>0){
+    let i=0;
+    for(i=0;i<importedWords.length;i++){
+        try {
+            const { data } = await axios.post('/api/v1/words', { name: importedWords[i], reminder: true })
+            render();
+            inputel.focus();
+        }
+        catch (error) {
+            logError(error.response.data);
+        }
+    }
+}
+*/
+})
+
+exportBtn.addEventListener("click", async function () {// done
+    logError("Check console for the list of words");
+    const {data}=await axios.get('/api/v1/words');
+    let allwords=data.data;
+    allwords=allwords.map((wor)=>{
+        return wor.name;
+    })
+    allwords=allwords.join(',');
+    console.log(allwords);
 })
 
 function render() {

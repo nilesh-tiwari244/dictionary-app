@@ -1,6 +1,7 @@
 const Word=require('../models/word');
 const asyncWrapper=require('../middleware/asyncWrapper');
 const {createCustomError}=require('../errors/customError');// here only the error function
+
 const allWords=asyncWrapper(async (req,res)=>{ //done
     const {limit}=req.query;
     //try{
