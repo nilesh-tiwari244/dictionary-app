@@ -36,7 +36,7 @@ const boxChecked = async (wor) => {// completed
     else {
         wor.reminder = true;
     }
-    const { data } = await axios.patch(`/api/v1/words/name/${wor.name}`, wor)
+    const { data } = await axios.patch(`/api/v1/words/id/${wor.id}`, wor)
     render();
 }
 
@@ -47,7 +47,6 @@ const wordClicked = async (wor) => {
     newWindow.param1 = wor.name;
     render();
 }
-
 
 const getword = async () => { // use axios.get to get all words
     try {
@@ -70,7 +69,7 @@ const getword = async () => { // use axios.get to get all words
                             </div>
                             <div style="display:flex; justify-content:space-between; width:120px">
                                 <button style="margin-right:0px; color:#ffa500;width:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="crossClicked({id:'${word._id}'})">X</button>
-                                <input style="width:20px;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({name:'${word.name}',reminder:${word.reminder}})">
+                                <input style="width:20px;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({id:'${word._id}',reminder:${word.reminder},name:'${word.name}'})">
                             </div>
                         </div>
                     </li> `
@@ -92,12 +91,7 @@ submitbtn.addEventListener("click", async () => { // done
         inputel.focus();
     }
     catch (error) {
-        if (error.response.status == 400) {
-            logError(error.response.data.msg);
-        }
-        else if (error.response.status == 500) {
-            logError(error.response.data.msg.errors.name.message);
-        }
+        logError(error.response.data);
     }
 })
 
@@ -114,7 +108,10 @@ inputel.addEventListener("keypress", async (event) => { // done
             un_li.innerHTML += zp;
             */
             render();
+            /* uncomment this to see meaning in merriam webster
             window.open(`${merr}${tempwo}`)
+            */
+           wordClicked({name:tempwo})
             inputel.focus();
             /*
             let zx = document.getElementById(`word_${wor}`);
@@ -122,12 +119,7 @@ inputel.addEventListener("keypress", async (event) => { // done
             */
         }
         catch (error) {
-            if (error.response.status == 400) {
-                logError(error.response.data.msg);
-            }
-            else if (error.response.status == 500) {
-                logError(error.response.data.msg.errors.name.message);
-            }
+            logError(error.response.data);
         }
     }
 })

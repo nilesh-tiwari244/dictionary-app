@@ -3,8 +3,8 @@
 const {customAPIError}=require('../errors/customError');
 const errorHandler=(error,req,res,next)=>{
     if (error instanceof customAPIError){
-        return res.status(error.statusCode).json({msg:error.message})
+        return res.status(error.statusCode).json(error.message)
     }
-    res.status(500).json("Something went wrong with the request");
+    res.status(500).json(error.errors.name.message);
 }
 module.exports=errorHandler;
