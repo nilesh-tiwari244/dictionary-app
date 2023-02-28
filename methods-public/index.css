@@ -1,8 +1,3 @@
-#error-spaces{
-    text-align: center;
-    margin:auto;
-    color: #9e330c;
-}
 body {
     margin: 0;
     padding: 10px;
@@ -13,11 +8,17 @@ body {
     height: 100%;
     width:100%;
     min-width: 400px;
-    overflow: scroll;
 }
-#buttons{
+
+#heading{
+    text-emphasis: bold;
+    margin-top: 60px;
+    margin-bottom: 40px;
+    height:200%;
     text-align: center;
-    margin:auto;
+    font-size: 200%;
+    color:rgb(245, 243, 243);
+    width:50%
 }
 #inp{
     align-self: center;
@@ -28,20 +29,43 @@ body {
     background-color: rgb(172, 16, 16);
     margin-bottom: 30px;
 }
+
 input{
     width:100%;
     height:100%;
     margin:auto;
     font-size: 25px;
 }
-#heading{
-    text-emphasis: bold;
-    margin-top: 60px;
-    margin-bottom: 40px;
+
+#buttons{
     text-align: center;
-    font-size: 40px;
-    color:rgb(245, 243, 243);
+    margin: auto;
+    width: 60%;
+    align-items: center;
 }
+
+button {
+    padding: 3px 3px;
+    width: 10%;
+    height: 35px;
+    margin-left: 3%;
+    border: none;
+    font-weight: bold;
+    font-size: 90%;
+    background-color: rgb(246, 216, 66);
+    white-space: normal;
+    word-wrap: break-word;
+}
+#error-spaces{
+    text-align: center;
+    margin:auto;
+    color: #9e330c;
+    width:50%;
+    white-space: normal;
+    word-wrap: break-word;
+    background-color: aliceblue;
+}
+
 #Entries{
     display:flex;
     margin:auto;
@@ -53,6 +77,29 @@ input{
     color:rgb(240, 199, 199);
     text-decoration-line: underline;
     justify-content: center;
+}
+
+
+ul {
+   /* list-style: none; */
+    padding-left: 0px;
+    padding-bottom: 0px;
+    overflow: scroll;
+    width: 40%;
+    max-height:400px;
+    margin:auto;
+    font-size: 30px;
+    color: #04496b;
+}
+li{
+    margin-left:10%;
+    padding-left: 5px;
+    padding-bottom: 10px;
+    justify-content:flex-end;
+}
+a{
+    text-decoration-line: none;
+    color: #0c9e46;
 }
 h1{
     margin:auto;
@@ -73,40 +120,4 @@ h3{
     box-sizing: border-box;
     border: 1 px solid #429e0c;
     margin-bottom: 4px;
-}
-#buttons{
-    text-align: center;
-    margin:auto;
-    align-items: center;
-    
-}
-button {
-    padding: 5px 5px;
-    width:110px;
-    height:50px;
-    margin-left: 30px;
-    border:none;
-    font-weight: bold;
-    background-color: rgb(246, 216, 66);
-}
-ul {
-   /* list-style: none; */
-    padding-left: 0px;
-    padding-bottom: 0px;
-    overflow: scroll;
-    width: 400px;
-    max-height:300px;
-    margin:auto;
-    font-size: 30px;
-    color: #04496b;
-}
-li{
-    margin-left:10%;
-    padding-left: 5px;
-    padding-bottom: 10px;
-    justify-content:flex-end;
-}
-a{
-    text-decoration-line: none;
-    color: #0c9e46;
 }

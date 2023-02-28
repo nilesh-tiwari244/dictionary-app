@@ -13,7 +13,6 @@ body {
     height: 100%;
     width:100%;
     min-width: 400px;
-    overflow: scroll;
 }
 #buttons{
     text-align: center;
@@ -91,12 +90,13 @@ button {
     background-color: rgb(246, 216, 66);
 }
 ul {
+    margin-top: 90px;
    /* list-style: none; */
     padding-left: 0px;
     padding-bottom: 0px;
     overflow: scroll;
-    width: 600px;
-    max-height:700px;
+    width: 40%;
+    max-height:600px;
     margin:auto;
     font-size: 30px;
     color: #04496b;

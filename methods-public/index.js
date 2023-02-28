@@ -19,8 +19,8 @@ const exportBtn = document.getElementById("button-export");
 
 
 const logError = (error) => { // logs error below the input box
-    err.innerHTML = `<h2 style="color:red;text-align:center;font-size:20px;font-weight:bold;">${error}</h2>`;
-    setTimeout(() => { err.innerHTML = '' }, 5000);
+    err.innerHTML = `<h2 style="color:red;text-align:center;font-size:20px;font-weight:bold;margin-top:30px">${error}</h2>`;
+    setTimeout(() => { err.innerHTML = '<h2 style="color:rgb(33, 40, 33);text-align:center;font-size:20px;font-weight:bold;margin-top:30px">Hello</h2>' }, 5000);
 }
 
 const crossClicked = async (id) => {// completed
@@ -65,12 +65,12 @@ const getword = async () => { // use axios.get to get all words
             //  <a style="color:${col};" id="word_${word.name}" href="${merr}${word.name}" target="_blank"> ${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()} </a> 
             return `<li>
                         <div style="display:flex; justify-content:space-between; margin-right:00px;">
-                            <div style="display:flex; justify-content:flex-start;align-items:flex-start;">
-                                <button style="padding: 0px;background-color: rgb(33, 40, 33);margin-leftt:0px; width:80px;margin:0px;align-self:flex-start;font-size:25px" onclick="wordClicked({name:'${word.name}'})"><text style="margin-left:0px;padding:0px;color:${col};align-self:flex-start;justify-content:flex-start;align-items:flex-start;">${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()}</text></button>
+                            <div style="display:flex; justify-content:flex-start;align-items:flex-start;width:70%;text-align: left">
+                                <button style="padding: 0px;background-color: rgb(33, 40, 33);margin-left:0px; width:100%;margin:0px;align-self:flex-start;font-size:90%;text-align:left" onclick="wordClicked({name:'${word.name}'})"><text style="margin-left:0px;padding:0px;color:${col};align-self:flex-start;justify-content:flex-start;align-items:flex-start;">${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()}</text></button>
                             </div>
-                            <div style="display:flex; justify-content:space-between; width:120px">
-                                <button style="margin-right:0px; color:#ffa500;width:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="crossClicked({id:'${word._id}'})">X</button>
-                                <input style="width:20px;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({id:'${word._id}',reminder:${word.reminder},name:'${word.name}'})">
+                            <div style="display:flex; justify-content:space-between; width:20%">
+                                <button style="margin-right:0px; color:#ffa500;width:50%; background-color: rgb(33, 40, 33);font-size:90%" onclick="crossClicked({id:'${word._id}'})">X</button>
+                                <input style="width:50%;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({id:'${word._id}',reminder:${word.reminder},name:'${word.name}'})">
                             </div>
                         </div>
                     </li> `

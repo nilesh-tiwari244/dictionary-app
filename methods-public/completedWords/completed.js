@@ -50,12 +50,12 @@ const getword = async () => { // use sxios.get to get all words
                 ll = ll + 1;
                 return `<li>
                 <div style="display:flex; justify-content:space-between; margin-right:00px;">
-                    <div style="display:flex; justify-content:flex-start;align-items:flex-start;">
-                        <button style="padding: 0px;background-color: rgb(33, 40, 33);margin-leftt:0px; width:80px;margin:0px;align-self:flex-start;font-size:25px" onclick="wordClicked({name:'${word.name}'})"><text style="margin-left:0px;padding:0px;color:${col};align-self:flex-start;justify-content:flex-start;align-items:flex-start;">${word.name.charAt().toUpperCase() + word.name.slice(1).toLowerCase()}</text></button>
+                    <div style="display:flex; justify-content:flex-start;align-items:flex-start;width:70%;text-align: left">
+                        <button style="padding: 0px;background-color: rgb(33, 40, 33);margin-left:0px; width:100%;margin:0px;align-self:flex-start;font-size:90%;text-align:left" onclick="wordClicked({name:'${word.name}'})"><text style="margin-left:0px;padding:0px;color:${col};align-self:flex-start;justify-content:flex-start;align-items:flex-start;">${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()}</text></button>
                     </div>
-                    <div style="display:flex; justify-content:space-between; width:120px">
-                        <button style="margin-right:0px; color:#ffa500;width:15px; background-color: rgb(33, 40, 33);font-size:25px" onclick="crossClicked({id:'${word._id}'})">X</button>
-                        <input style="width:20px;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({id:'${word._id}',reminder:${word.reminder},name:'${word.name}'})">
+                    <div style="display:flex; justify-content:space-between; width:20%">
+                        <button style="margin-right:0px; color:#ffa500;width:50%; background-color: rgb(33, 40, 33);font-size:90%" onclick="crossClicked({id:'${word._id}'})">X</button>
+                        <input style="width:50%;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({id:'${word._id}',reminder:${word.reminder},name:'${word.name}'})">
                     </div>
                 </div>
             </li> `
