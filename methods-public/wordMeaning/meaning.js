@@ -50,7 +50,6 @@ const getword = async (wor) => { // use sxios.get to get all words
 }
 
 goBack.addEventListener('click', () => {
-    console.log("clicked");
     window.open('/index.html', "_self");
 })
 

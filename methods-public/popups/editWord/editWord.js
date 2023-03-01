@@ -7,7 +7,6 @@ const goBack = document.getElementById("button-goback");
 const un_li = document.querySelector("#unordered-list");
 const count = document.getElementById("count");
 
-console.log(window.opener);
 const crossClicked = async ({ name }) => {// completed
     console.log(name);
     let pp = await axios.delete(`/api/v1/words/name/${name}`);

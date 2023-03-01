@@ -17,6 +17,9 @@ const count = document.getElementById("count");
 const importBtn = document.getElementById("button-import");
 const exportBtn = document.getElementById("button-export");
 
+let wid=screen.availWidth;
+let hei=screen.availHeight;
+//console.log(wid,hei);
 
 const logError = (error) => { // logs error below the input box
     err.innerHTML = `<h2 style="color:red;text-align:center;font-size:20px;font-weight:bold;margin-top:30px">${error}</h2>`;
@@ -24,8 +27,7 @@ const logError = (error) => { // logs error below the input box
 }
 
 const crossClicked = async (id) => {// completed
-    console.log(id.id);
-    let pp = await axios.delete(`/api/v1/words/id/${id.id}`);
+    var newWindow = window.open(`./popups/deleteWord/deleteWord.html?nam=${id.name}&id=${id.id}`,"_self","toolbar=no,scrollbars=no,resizable=yes,top=425,left=500,width=550,height=250");
     render();
     inputel.focus();
 }
@@ -37,6 +39,7 @@ const boxChecked = async (wor) => {// completed
     else {
         wor.reminder = true;
     }
+   
     const { data } = await axios.patch(`/api/v1/words/id/${wor.id}`, wor)
     render();
 }
@@ -69,7 +72,7 @@ const getword = async () => { // use axios.get to get all words
                                 <button style="padding: 0px;background-color: rgb(33, 40, 33);margin-left:0px; width:100%;margin:0px;align-self:flex-start;font-size:90%;text-align:left" onclick="wordClicked({name:'${word.name}'})"><text style="margin-left:0px;padding:0px;color:${col};align-self:flex-start;justify-content:flex-start;align-items:flex-start;">${word.name.charAt().toUpperCase()+word.name.slice(1).toLowerCase()}</text></button>
                             </div>
                             <div style="display:flex; justify-content:space-between; width:20%">
-                                <button style="margin-right:0px; color:#ffa500;width:50%; background-color: rgb(33, 40, 33);font-size:90%" onclick="crossClicked({id:'${word._id}'})">X</button>
+                                <button style="margin-right:0px; color:#ffa500;width:50%; background-color: rgb(33, 40, 33);font-size:90%" onclick="crossClicked({id:'${word._id}',name:'${word.name}'})">X</button>
                                 <input style="width:50%;height:20px; background-color: rgb(33, 40, 33);display:flex; justify-content:flex-end; " type="checkbox" id="checkbox_${word.name}" ${pp} onclick="boxChecked({id:'${word._id}',reminder:${word.reminder},name:'${word.name}'})">
                             </div>
                         </div>
