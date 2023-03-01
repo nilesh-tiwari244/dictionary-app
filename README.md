@@ -1,6 +1,7 @@
-# dictionary-app
-# this will have a basic html based frontend with provision for adding new words to your dictionary, and can also see its meaning on merriam webster
-# the words will be saved on cloud and can be retrieved, provided the correct credentials
+# Own dictionary-app
+# Used NodeJs and ExpressJs for backend server and MongDb for database
+# For frontend used HTML, CSS and js 
+# The app will have provision to have the basic CRUD operation
 
 ## learning basics of git along with it
 
